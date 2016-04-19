@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import packager from 'electron-packager';
 import tmp from 'tmp';
 import ncp from 'ncp';
@@ -86,6 +87,9 @@ function buildMain(options, callback) {
             }
 
             maybeCopyIcons(options, appPath, error => {
+                if (options.save) {
+                  saveToGlobalNativefierFile(options);
+                }
                 callback(error, appPath);
             });
         }
@@ -154,6 +158,59 @@ function maybeCopyIcons(options, appPath, callback) {
     copy(options.icon, path.join(destIconPath, destFileName), error => {
         callback(error);
     });
+}
+
+function saveToGlobalNativefierFile(opts) {
+  var home     = getUserHome(),
+      filePath = path.join(home, '/.nativefier.json'),
+      stats,
+      apps;
+
+  if (!fileExists(filePath)) {
+    apps = [];
+  } else {
+    try {
+      apps = JSON.parse(fs.readFileSync(filePath));
+    } catch (e) {
+      apps = [];
+    }
+  }
+  apps.push(selectAppArgs(opts));
+
+  fs.writeFileSync(filePath, JSON.stringify(apps, null, 2));
+}
+
+function getUserHome() {
+    return process.env.HOME || process.env.USERPROFILE;
+}
+
+function fileExists(filePath) {
+    try {
+      fs.statSync(filePath).isFile();
+    } catch (err) {
+      return false;
+    }
+
+    return true;
+}
+
+function selectAppArgs(options) {
+    return {
+        name: options.name,
+        targetUrl: options.targetUrl,
+        counter: options.counter,
+        width: options.width,
+        height: options.height,
+        showMenuBar: options.showMenuBar,
+        userAgent: options.userAgent,
+        nativefierVersion: options.nativefierVersion,
+        ignoreCertificate: options.ignoreCertificate,
+        insecure: options.insecure,
+        flashPluginDir: options.flashPluginDir,
+        fullScreen: options.fullScreen,
+        maximize: options.maximize,
+        disableContextMenu: options.disableContextMenu
+    };
 }
 
 export default buildMain;
