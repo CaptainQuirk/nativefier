@@ -56,7 +56,8 @@ function optionsFactory(inpOptions, callback) {
         fullScreen: inpOptions.fullScreen || false,
         maximize: inpOptions.maximize || false,
         verbose: inpOptions.verbose,
-        disableContextMenu: inpOptions.disableContextMenu
+        disableContextMenu: inpOptions.disableContextMenu,
+        save: inpOptions.save || false
     };
 
     if (options.verbose) {

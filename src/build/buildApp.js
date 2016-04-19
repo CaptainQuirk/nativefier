@@ -107,7 +107,8 @@ function selectAppArgs(options) {
         flashPluginDir: options.flashPluginDir,
         fullScreen: options.fullScreen,
         maximize: options.maximize,
-        disableContextMenu: options.disableContextMenu
+        disableContextMenu: options.disableContextMenu,
+        save: typeof options.save !== 'undefined' ? options.save : false
     };
 }
 

@@ -43,6 +43,7 @@ if (require.main === module) {
         .option('--maximize', 'if the app should always be started maximized')
         .option('--verbose', 'if verbose logs should be displayed')
         .option('--disable-context-menu', 'disable the context menu')
+        .option('-s, --save', 'if application should be referenced in global nativefier.json file')
         .parse(process.argv);
 
     if (!process.argv.slice(2).length) {
