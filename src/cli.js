@@ -16,6 +16,7 @@ if (require.main === module) {
 
     program
         .version(packageJson.version)
+        .command('install', 'install packages from global file')
         .arguments('<targetUrl> [dest]')
         .action(function(targetUrl, appDir) {
             program.targetUrl = targetUrl;
